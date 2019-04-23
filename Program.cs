@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlTypes;
 using EmailSenderProgram.MailTypes;
 
 namespace EmailSenderProgram
@@ -32,17 +33,14 @@ namespace EmailSenderProgram
             int orderListCount = DataLayer.ListOrders().Count;
             string sendOldCustomerMessage = validateOrderrList == true ? Constant.OldCustomerMail.sendingComeBackMail : Constant.OldCustomerMail.notSenndingComeBackMail;
             Console.WriteLine(sendOldCustomerMessage);
-            //Debug mode, always send Comeback mail   
+
+            //Oldcustomer is used to validate so we can keep track on oldCustomerlist and orderList.  
             bool oldCustomerMailSenderValidation = validateOrderrList == true ? oldCustomerListCount >= 1 : false;
-            OldCustomerMail.mailToOldCustomer(OldCustomerMail.GetCustomerList(), OldCustomerMail.GetOrderList());
 
-            //If the application is up and running this should be automatic.
-			if (DateTime.Now.DayOfWeek.Equals(DayOfWeek.Monday))
-			{
-                OldCustomerMail.mailToOldCustomer(OldCustomerMail.GetCustomerList(), OldCustomerMail.GetOrderList());
-            }
 
-            ///We send out message on the console to inform about the message that are sent
+            oldCustomerMailSenderValidation = DataHelper.DaysOfWeek() ? OldCustomerMail.mailToOldCustomer(OldCustomerMail.GetCustomerList(), OldCustomerMail.GetOrderList()) : false;
+
+            //We send out message on the console to inform about the message that are sent
             string newCustomerMessage = newCustomerMailSenderValidation == true ? Constant.NewCustomerMail.newCustomerMailSent : Constant.NewCustomerMail.newCustomerMailNotSent;
             string oldCustomerMessage = oldCustomerMailSenderValidation == true ? Constant.OldCustomerMail.oldCustomerMailSent: Constant.OldCustomerMail.oldCustomerMailNotsent;
 

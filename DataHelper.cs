@@ -53,6 +53,24 @@ namespace EmailSenderProgram
             return count;
         }
 
+        /// <summary>
+        /// Checks for sunday.
+        /// </summary>
+        /// <returns>Bool</returns>
+        public static bool DaysOfWeek()
+        {
+            if (DateTime.Now.DayOfWeek.Equals(DayOfWeek.Sunday))
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("No mails are sent for old customers becouse it's " + DateTime.Now.DayOfWeek);
+                return false;
+
+            }
+        }
+
     }    
 }
 
